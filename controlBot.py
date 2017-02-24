@@ -10,15 +10,24 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 
 #Scripts
-script1="ls -l"
+script1="sh /home/miquel/backupsWPMaker/backupWP.sh"
+script2="sudo sh /home/miquel/backupsWPMaker/restaurar.sh"
+script3="cat /home/miquel/monitoring.log"
+script4="sh /home/miquel/wordpressMaker/ip.sh"
 nomscript1="Copia de MakerOnBoard"
+nomscript2="Restaurar MakerOnBoard"
+nomscript3="Revisar log"
+nomscript4="Ip Externa"
 descripcio_script1="S'inicia la copia de seguretat"
+descripcio_script2="S'inicia la restauració"
+descripcio_script3="Log amb el detall de falles de connexió"
+descripcio_script4=""
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                    level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def start(bot, update):
-    keyboard = [[InlineKeyboardButton(nomscript1, callback_data='1')], [InlineKeyboardButton("Option 2", callback_data='2')],[InlineKeyboardButton("Option 3", callback_data='3')]]
+    keyboard = [[InlineKeyboardButton(nomscript1, callback_data='1')],[InlineKeyboardButton(nomscript2, callback_data='2')],[InlineKeyboardButton(nomscript3, callback_data='3')],[InlineKeyboardButton(nomscript4, callback_data='4')] ]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -33,13 +42,36 @@ def button(bot, update):
         command_line = script1
         args = shlex.split(command_line)
         output=subprocess.check_output(args)  
-          
-    bot.editMessageText(text="%s" % descripcio_script1,
+        missatge =descripcio_script1 
+    if query.data == '2' :
+        command_line = script2
+        args = shlex.split(command_line)
+        output=subprocess.check_output(args)  
+        missatge =descripcio_script2
+    
+    if query.data == '3' :
+        command_line = script3
+        args = shlex.split(command_line)
+        output=subprocess.check_output(args)  
+        missatge =descripcio_script3
+    
+    if query.data == '4' :
+        command_line = script4
+        args = shlex.split(command_line)
+        output=subprocess.check_output(args)  
+        missatge =descripcio_script4     
+    
+    bot.editMessageText(text="%s" % missatge,
                         chat_id=query.message.chat_id,
                         message_id=query.message.message_id)
     
     bot.sendMessage(chat_id=query.message.chat_id, text=output)
     
+
+
+
+
+
 def help(bot, update):
     update.message.reply_text("Use /start to test this bot.")
 
