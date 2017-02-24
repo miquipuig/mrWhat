@@ -31,7 +31,7 @@ def start(bot, update):
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
-    update.message.reply_text('Escull l'acció', reply_markup=reply_markup)
+    update.message.reply_text("Escull l'acció", reply_markup=reply_markup)
 
     logging.info("Seleccion %s" % (reply_markup))
     
