@@ -13,21 +13,28 @@ from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 script1="sh /home/miquel/backupsWPMaker/backupWP.sh"
 script2="sudo sh /home/miquel/backupsWPMaker/restaurar.sh"
 script3="cat /home/miquel/monitoring.log"
-script4="sh /home/miquel/wordpressMaker/ip.sh"
+script4="sudo sh /home/miquel/wordpressMaker/monitoring.sh"
+script5="sudo sh /home/miquel/test/test.sh"
+
+
 nomscript1="Copia de MakerOnBoard"
 nomscript2="Restaurar MakerOnBoard"
 nomscript3="Revisar log"
 nomscript4="Ip Externa"
+nomscript5="Actualitzar Node Test"
 descripcio_script1="S'inicia la copia de seguretat"
 descripcio_script2="S'inicia la restauració"
 descripcio_script3="Log amb el detall de falles de connexió"
-descripcio_script4=""
+descripcio_script4="Detall de la Ip Externa"
+descripcio_script5="S'inicia l'actualització"
+
+
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                    level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def start(bot, update):
-    keyboard = [[InlineKeyboardButton(nomscript1, callback_data='1')],[InlineKeyboardButton(nomscript2, callback_data='2')],[InlineKeyboardButton(nomscript3, callback_data='3')],[InlineKeyboardButton(nomscript4, callback_data='4')] ]
+    keyboard = [[InlineKeyboardButton(nomscript1, callback_data='1')],[InlineKeyboardButton(nomscript2, callback_data='2')],[InlineKeyboardButton(nomscript3, callback_data='3')],[InlineKeyboardButton(nomscript4, callback_data='4')], [InlineKeyboardButton(nomscript5, callback_data='5')] ]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
 
@@ -59,7 +66,12 @@ def button(bot, update):
         command_line = script4
         args = shlex.split(command_line)
         output=subprocess.check_output(args)  
-        missatge =descripcio_script4     
+        missatge =descripcio_script4
+    if query.data == '5' :
+        command_line = script5
+        args = shlex.split(command_line)
+        output=subprocess.check_output(args)
+        missatge =descripcio_script5
     
     bot.editMessageText(text="%s" % missatge,
                         chat_id=query.message.chat_id,
